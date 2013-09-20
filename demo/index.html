@@ -26,7 +26,7 @@
 
         .container {
             width: 70%;
-            padding: 5%;
+            padding: 1%;
             margin: 0px auto;
             background: #fff;
             box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
@@ -36,8 +36,20 @@
 <body>
 
 <div class="container">
-    <div class="video" data-type="vimeo" data-code="29950141" data-responsive="false" data-width="500" data-height="280"></div>
-    <div class="video" data-type="youtube" data-code="ubKinQvpc6w" data-width="960" data-height="720"></div>
+    <h1>Controls</h1>
+    <button onclick="$('.video').video('play');">Start All</button>
+    <button onclick="$('.video').video('pause');">Pause All</button>
+    <button onclick="$('[data-code=29950141]').video('play');">Play Video with Code "29950141"</button>
+    <button onclick="$(':dcd-videoYoutube').video('play');">Play Youtube Videos</button>
+    <button onclick="$('.video').video('stop');">Stop All</button>
+    <button onclick="alert($(':dcd-videoVimeo').video('playing'))">First playing?</button>
+    <button onclick="alert($(':dcd-videoYoutube').video('playing'))">Second playing?</button>
+</div>
+
+<div class="container">
+    <h1>Videos</h1>
+    <div class="video" data-type="vimeo" data-code="29950141" data-width="500" data-height="280"></div>
+    <div class="video" data-type="youtube" data-code="ubKinQvpc6w" data-responsive="false" data-width="960" data-height="720"></div>
 </div>
 
 <script type="text/javascript">
