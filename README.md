@@ -9,6 +9,12 @@ Features
 - supports >=IE8, Firefox, Chrome, Safari, Opera
 - Responsive with CSS inspired by http://alistapart.com/article/creating-intrinsic-ratios-for-video
 
+Demo
+============
+Demo can be found here: http://jquery-video.dachcom.ch/demo/
+
+You can also checkout the project and open the index.html in the demo folder.
+
 Dependencies
 ============
 - jQuery: http://jquery.com/
@@ -75,11 +81,6 @@ Examples
      $('.video').video('stop'); // stops all videos with class video
      $('[data-code="29950141"]').video('playing'); // returns true when video is playing, false if video is paused
 ```
-
-Demo
-============
-Demo can be found here:
-You can also checkout the project and open the index.html in the demo folder.
 
 Wishlist
 ============
