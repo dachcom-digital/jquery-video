@@ -78,7 +78,8 @@ Examples
 
 Demo
 ============
-Demo can be found here:
+Demo can be found here: http://jquery-video.dachcom.ch/demo/
+
 You can also checkout the project and open the index.html in the demo folder.
 
 Wishlist
