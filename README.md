@@ -1,11 +1,11 @@
 jquery-video
 ============
-Unifies the iframe APIs of Youtube and Vimeo. Build as responsive jQuery UI widget.
+Unifies the iframe APIs of Youtube, Vimeo and Dailymotion. Build as responsive jQuery UI widget.
 
 Features
 ============
 - Play, Pause and Stop command
-- for Youtube and Vimeo Player
+- for Youtube, Vimeo and Dailymotion Player
 - supports >=IE8, Firefox, Chrome, Safari, Opera
 - Responsive with CSS inspired by http://alistapart.com/article/creating-intrinsic-ratios-for-video
 
@@ -13,7 +13,7 @@ Demo
 ============
 Demo can be found here: http://jquery-video.dachcom.ch/demo/
 
-You can also checkout the project and open the index.html in the demo folder.
+You can also checkout the project and open the index.html in the demo folder (use a webserver).
 
 Dependencies
 ============
@@ -21,6 +21,8 @@ Dependencies
 - jQuery UI Widget: http://jqueryui.com/
 - Vimeo API (Froogaloop2): https://github.com/vimeo/player-api/tree/master/javascript
 - Youtube API: https://developers.google.com/youtube/iframe_api_reference
+- Dailymotion API: http://www.dailymotion.com/doc/api/player.html
+- Jasmine (Testing): http://pivotal.github.io/jasmine/
 
 Installation
 ============
@@ -28,18 +30,12 @@ Installation
 ```html
 <!-- 1. Place containers with data attributes for configuration -->
 <div class="container">
-    <div class="video" data-type="vimeo" data-code="29950141" data-responsive="false" data-width="500" data-height="280"></div>
-    <div class="video" data-type="youtube" data-code="ubKinQvpc6w" data-width="960" data-height="720"></div>
+    <div class="video" data-type="vimeo" data-code="29950141" data-width="500" data-height="280"></div>
+    <div class="video" data-type="youtube" data-code="ubKinQvpc6w" data-responsive="false" data-width="960" data-height="720"></div>
+    <div class="video" data-type="dailymotion" data-code="x14b8od" data-width="500" data-height="280"></div>
 </div>
 
 <!-- 2. Include libraries -->
-<script type="text/javascript">
-    var tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-</script>
 <script src="../lib/jquery.js" type="text/javascript"></script>
 <script src="../lib/jquery.ui.widget.js" type="text/javascript"></script>
 <script src="../lib/froogaloop.js" type="text/javascript"></script>
@@ -49,9 +45,9 @@ Installation
 
 <!-- 4. Bind widget to containers -->
 <script type="text/javascript">
-    window.onYouTubeIframeAPIReady = function () {
+    $(function () {
         $('.video').video();
-    };
+    });
 </script>
 ```
 
@@ -89,7 +85,7 @@ Wishlist
 - include full test suite
 - make 'responsive' class configurable
 - implement more API commands
-- implement more APIs (Dailymotion, MyVideo, ...)
+- implement more APIs (MyVideo, ...)
 
 Known Issues
 ============

@@ -1,4 +1,4 @@
-/*global window, $f, jQuery, YT*/
+/*global window, $f, jQuery, YT, DM, document*/
 /*jslint nomen: true*/
 
 /**
@@ -9,6 +9,46 @@
  */
 (function ($) {
     'use strict';
+
+    /**
+     * Small helper object for registering video apis
+     */
+    var videoRegister = {
+        /**
+         *
+         */
+        _register: {},
+
+        /**
+         * Checks, if api is already registered
+         *
+         * @param api
+         * @returns {boolean}
+         */
+        isRegistered: function (api) {
+            return this._register[api] !== undefined;
+        },
+
+        /**
+         * Checks, if api is loaded
+         *
+         * @param api
+         * @returns {boolean}
+         */
+        isLoaded: function (api) {
+            return this._register[api] !== undefined && this._register[api] === true;
+        },
+
+        /**
+         * Register new video api
+         * @param api
+         * @param loaded
+         */
+        register: function (api, loaded) {
+            loaded = loaded || false;
+            this._register[api] = loaded;
+        }
+    };
 
     $.widget('dcd.video', {
         /**
@@ -25,6 +65,10 @@
             case 'vimeo':
                 this.element.videoVimeo();
                 this._player = this.element.data('dcdVideoVimeo');
+                break;
+            case 'dailymotion':
+                this.element.videoDailymotion();
+                this._player = this.element.data('dcdVideoDailymotion');
                 break;
             default:
                 throw {
@@ -106,15 +150,46 @@
          * @private
          */
         _init: function () {
+            var self = this;
             this._initialize();
+
             this.element.append('<div/>');
 
-            this._player = new YT.Player(this.element.children(':first')[0], {
-                height: this._height,
-                width: this._width,
-                playerVars: { 'autoplay': 0, 'controls': 1 },
-                videoId: this._code
+            $(window).on('youtubeapiready', function () {
+                self._player = new YT.Player(self.element.children(':first')[0], {
+                    height: self._height,
+                    width: self._width,
+                    videoId: self._code
+                });
             });
+
+            this._loadApi();
+        },
+
+        /**
+         * Loads Youtube API and triggers event, when loaded
+         * @private
+         */
+        _loadApi: function () {
+            if (videoRegister.isRegistered('youtube')) {
+                if (videoRegister.isLoaded('youtube')) {
+                    $(window).trigger('youtubeapiready');
+                }
+                return;
+            }
+            videoRegister.register('youtube');
+
+            var element = document.createElement('script'),
+                scriptTag = document.getElementsByTagName('script')[0];
+
+            element.async = true;
+            element.src = document.location.protocol + "//www.youtube.com/iframe_api";
+            scriptTag.parentNode.insertBefore(element, scriptTag);
+
+            window.onYouTubeIframeAPIReady = function () {
+                $(window).trigger('youtubeapiready');
+                videoRegister.register('youtube', true);
+            };
         },
 
         /**
@@ -194,6 +269,87 @@
 
         /**
          * Playing command for Vimeo
+         */
+        playing: function () {
+            return this._playing;
+        }
+    });
+
+    $.widget('dcd.videoDailymotion', $.dcd.video, {
+        /**
+         * Initialization of the Dailymotion widget
+         * @private
+         */
+        _init: function () {
+            var self = this;
+            this._initialize();
+
+            this.element.append('<div/>');
+
+            $(window).on('dailymotionapiready', function () {
+                self._player = DM.player(self.element.children(':first')[0], {
+                    height: self._height,
+                    width: self._width,
+                    video: self._code
+                });
+            });
+
+            this._loadApi();
+        },
+
+        /**
+         * Loads Dailymotion API and triggers event, when loaded
+         * @private
+         */
+        _loadApi: function () {
+            if (videoRegister.isRegistered('dailymotion')) {
+                if (videoRegister.isLoaded('dailymotion')) {
+                    $(window).trigger('dailymotionapiready');
+                }
+                return;
+            }
+            videoRegister.register('dailymotion');
+
+            var element = document.createElement('script'),
+                scriptTag = document.getElementsByTagName('script')[0];
+
+            element.async = true;
+            element.src = document.location.protocol + '//api.dmcdn.net/all.js';
+
+            scriptTag.parentNode.insertBefore(element, scriptTag);
+
+            window.dmAsyncInit = function () {
+                $(window).trigger('dailymotionapiready');
+                videoRegister.register('dailymotion', true);
+            };
+        },
+
+        /**
+         * Play command for Dailymotion
+         */
+        play: function () {
+            this._player.play();
+            this._playing = true;
+        },
+
+        /**
+         * Pause command for Dailymotion
+         */
+        pause: function () {
+            this._player.pause();
+            this._playing = false;
+        },
+
+        /**
+         * Stop command for Dailymotion
+         */
+        stop: function () {
+            this._player.pause();
+            this._playing = false;
+        },
+
+        /**
+         * Playing command for Dailymotion
          */
         playing: function () {
             return this._playing;
