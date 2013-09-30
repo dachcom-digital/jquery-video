@@ -56,28 +56,28 @@
          * Calls API specific widgets
          * @private
          */
-        _init: function () {
+        _create: function () {
             switch (this.element.data('type')) {
-            case 'youtube':
-                this.element.videoYoutube();
-                this._player = this.element.data('dcdVideoYoutube');
-                break;
-            case 'vimeo':
-                this.element.videoVimeo();
-                this._player = this.element.data('dcdVideoVimeo');
-                break;
-            case 'dailymotion':
-                this.element.videoDailymotion();
-                this._player = this.element.data('dcdVideoDailymotion');
-                break;
-            default:
-                throw {
-                    name: 'Video Error',
-                    message: 'Unknown video type',
-                    toString: function () {
-                        return this.name + ": " + this.message;
-                    }
-                };
+                case 'youtube':
+                    this.element.videoYoutube();
+                    this._player = this.element.data('dcdVideoYoutube');
+                    break;
+                case 'vimeo':
+                    this.element.videoVimeo();
+                    this._player = this.element.data('dcdVideoVimeo');
+                    break;
+                case 'dailymotion':
+                    this.element.videoDailymotion();
+                    this._player = this.element.data('dcdVideoDailymotion');
+                    break;
+                default:
+                    throw {
+                        name: 'Video Error',
+                        message: 'Unknown video type',
+                        toString: function () {
+                            return this.name + ": " + this.message;
+                        }
+                    };
             }
         },
 
@@ -149,7 +149,7 @@
          * Initialization of the Youtube widget
          * @private
          */
-        _init: function () {
+        _create: function () {
             var self = this;
             this._initialize();
 
@@ -229,16 +229,18 @@
          * Initialize the Vimeo widget
          * @private
          */
-        _init: function () {
+        _create: function () {
             this._initialize();
+
+            var timestamp = new Date().getTime();
 
             this.element.append(
                 $('<iframe/>')
                     .attr('frameborder', 0)
-                    .attr('id', 'vimeo' + this.element.data('code'))
+                    .attr('id', 'vimeo' + this.element.data('code') + timestamp)
                     .attr('width', this._width)
                     .attr('height', this._height)
-                    .attr('src', 'http://player.vimeo.com/video/' + this.element.data('code') + '?api=1&player_id=vimeo' + this.element.data('code'))
+                    .attr('src', 'http://player.vimeo.com/video/' + this.element.data('code') + '?api=1&player_id=vimeo' + this.element.data('code') + timestamp)
             );
             this._player = $f(this.element.children(":first")[0]);
         },
@@ -280,7 +282,7 @@
          * Initialization of the Dailymotion widget
          * @private
          */
-        _init: function () {
+        _create: function () {
             var self = this;
             this._initialize();
 
