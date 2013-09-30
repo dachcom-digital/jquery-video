@@ -85,9 +85,9 @@ Wishlist
 - include full test suite
 - make 'responsive' class configurable
 - implement more API commands
-- implement more APIs (~~Dailymotion~~, MyVideo, ...)
+- implement more APIs (<del>Dailymotion</del>, MyVideo, ...)
 
 Known Issues
 ============
 - Youtube API is throwing exceptions
-- ~~You can't have more than one Vimeo video with the same code on one page~~
+- <del>You can't have more than one Vimeo video with the same code on one page</del>
