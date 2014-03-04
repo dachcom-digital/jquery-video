@@ -49,7 +49,7 @@
             it("should play the videos", function () {
                 var video = $(':dcd-videoYoutube');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 expect(video.video('playing')).toBeTruthy();
             });
 

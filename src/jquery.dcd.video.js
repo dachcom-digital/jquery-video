@@ -58,26 +58,26 @@
          */
         _create: function () {
             switch (this.element.data('type')) {
-                case 'youtube':
-                    this.element.videoYoutube();
-                    this._player = this.element.data('dcdVideoYoutube');
-                    break;
-                case 'vimeo':
-                    this.element.videoVimeo();
-                    this._player = this.element.data('dcdVideoVimeo');
-                    break;
-                case 'dailymotion':
-                    this.element.videoDailymotion();
-                    this._player = this.element.data('dcdVideoDailymotion');
-                    break;
-                default:
-                    throw {
-                        name: 'Video Error',
-                        message: 'Unknown video type',
-                        toString: function () {
-                            return this.name + ": " + this.message;
-                        }
-                    };
+            case 'youtube':
+                this.element.videoYoutube();
+                this._player = this.element.data('dcdVideoYoutube');
+                break;
+            case 'vimeo':
+                this.element.videoVimeo();
+                this._player = this.element.data('dcdVideoVimeo');
+                break;
+            case 'dailymotion':
+                this.element.videoDailymotion();
+                this._player = this.element.data('dcdVideoDailymotion');
+                break;
+            default:
+                throw {
+                    name: 'Video Error',
+                    message: 'Unknown video type',
+                    toString: function () {
+                        return this.name + ": " + this.message;
+                    }
+                };
             }
         },
 
@@ -88,6 +88,7 @@
         _initialize: function () {
             this._playing = false;
 
+            this._params = this.element.data('params') || {};
             this._code = this.element.data('code');
             this._width = this.element.data('width');
             this._height = this.element.data('height');
@@ -155,12 +156,34 @@
 
             this.element.append('<div/>');
 
-            $(window).on('youtubeapiready', function () {
-                self._player = new YT.Player(self.element.children(':first')[0], {
-                    height: self._height,
-                    width: self._width,
-                    videoId: self._code
-                });
+            this._on(window, {
+                'youtubeapiready': function () {
+                    if (self._player !== undefined) {
+                        return;
+                    }
+
+                    self._player = new YT.Player(self.element.children(':first')[0], {
+                        height: self._height,
+                        width: self._width,
+                        videoId: self._code,
+                        playerVars: self._params,
+                        events: {
+                            onStateChange: function (data) {
+                                switch (window.parseInt(data.data, 10)) {
+                                case 1:
+                                    self._playing = true;
+                                    break;
+                                default:
+                                    self._playing = false;
+                                    break;
+                                }
+
+                                self._trigger('statechange', {}, data);
+                            }
+                        }
+
+                    });
+                }
             });
 
             this._loadApi();
@@ -221,6 +244,15 @@
          */
         playing: function () {
             return this._playing;
+        },
+
+        /**
+         * stops and unloads player
+         * @private
+         */
+        _destroy: function () {
+            this.stop();
+            this._player.destroy();
         }
     });
 
@@ -237,10 +269,10 @@
             this.element.append(
                 $('<iframe/>')
                     .attr('frameborder', 0)
-                    .attr('id', 'vimeo' + this.element.data('code') + timestamp)
+                    .attr('id', 'vimeo' + this._code + timestamp)
                     .attr('width', this._width)
                     .attr('height', this._height)
-                    .attr('src', 'http://player.vimeo.com/video/' + this.element.data('code') + '?api=1&player_id=vimeo' + this.element.data('code') + timestamp)
+                    .attr('src', 'http://player.vimeo.com/video/' + this._code + '?api=1&player_id=vimeo' + this._code + timestamp)
             );
             this._player = $f(this.element.children(":first")[0]);
         },
@@ -288,12 +320,18 @@
 
             this.element.append('<div/>');
 
-            $(window).on('dailymotionapiready', function () {
-                self._player = DM.player(self.element.children(':first')[0], {
-                    height: self._height,
-                    width: self._width,
-                    video: self._code
-                });
+            this._on(window, {
+                'dailymotionapiready': function () {
+                    if (self._player !== undefined) {
+                        return;
+                    }
+
+                    self._player = DM.player(self.element.children(':first')[0], {
+                        height: self._height,
+                        width: self._width,
+                        video: self._code
+                    });
+                }
             });
 
             this._loadApi();

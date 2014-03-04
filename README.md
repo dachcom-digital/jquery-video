@@ -54,7 +54,7 @@ Installation
 Options
 ============
 
-- **type**: API used `[Required:(youtube|vimeo)]`
+- **type**: API used `[Required:(youtube|vimeo|dailymotion)]`
 - **code**: the video code `[Required]`
 - **width**: the width of the video `[Required:Integer]`
 - **height**: the height of the video `[Required:Integer]`
