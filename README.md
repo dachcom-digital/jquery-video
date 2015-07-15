@@ -31,7 +31,7 @@ Installation
 <!-- 1. Place containers with data attributes for configuration -->
 <div class="container">
     <div class="video" data-type="vimeo" data-code="29950141" data-width="500" data-height="280"></div>
-    <div class="video" data-type="youtube" data-code="ubKinQvpc6w" data-responsive="false" data-width="960" data-height="720"></div>
+    <div class="video" data-type="youtube" data-autoplay="true" data-code="ubKinQvpc6w" data-responsive="false" data-width="960" data-height="720"></div>
     <div class="video" data-type="dailymotion" data-code="x14b8od" data-width="500" data-height="280"></div>
 </div>
 
@@ -59,6 +59,7 @@ Options
 - **width**: the width of the video `[Required:Integer]`
 - **height**: the height of the video `[Required:Integer]`
 - **responsive**: should the video be included responsively `[Optional:(true|false)]`
+- **autoplay**: should the video play automatically `[Optional:(true|false)]`
 
 Methods
 ============
@@ -89,5 +90,5 @@ Wishlist
 
 Known Issues
 ============
-- Youtube API is throwing exceptions
+- Youtube and Dailymotion API are throwing exceptions
 - <del>You can't have more than one Vimeo video with the same code on one page</del>

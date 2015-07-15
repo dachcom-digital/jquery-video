@@ -46,6 +46,12 @@
                 return loaded;
             }, 2000);
 
+            it("should play automatically", function () {
+                var video = $('[data-autoplay=true]:dcd-videoYoutube');
+                expect(video.video('playing')).toBeTruthy();
+                video.video('pause');
+            });
+
             it("should play the videos", function () {
                 var video = $(':dcd-videoYoutube');
                 video.video('play');
@@ -68,9 +74,18 @@
                 video.video('stop');
                 expect(video.video('playing')).toBeFalsy();
             });
+
         });
 
         describe("The Vimeo video widget", function () {
+
+            it("should play automatically", function () {
+                var video = $('[data-autoplay=true]:dcd-videoVimeo');
+                waits(1000);
+                expect(video.video('playing')).toBeTruthy();
+                video.video('pause');
+            });
+
             it("should play the videos", function () {
                 var video = $(':dcd-videoVimeo');
                 video.video('play');
@@ -104,6 +119,12 @@
             waitsFor('API to be loaded', function () {
                 return loaded;
             }, 2000);
+
+            it("should play automatically", function () {
+                var video = $('[data-autoplay=true]:dcd-videoDailymotion');
+                expect(video.video('playing')).toBeTruthy();
+                video.video('pause');
+            });
 
             it("should play the videos", function () {
                 var video = $(':dcd-videoDailymotion');
