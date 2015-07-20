@@ -3,9 +3,10 @@
 
 /**
  * jquery-video widget
- * Copyright 2013 DACHCOM.DIGITAL AG
- * @author Volker Andres
+ * Copyright 2015 DACHCOM.DIGITAL AG
+ * @author Volker Andres, Marco Rieser
  * @see https://github.com/dachcom-digital/jquery-video
+ * @version 0.2.0
  */
 (function ($) {
     'use strict';
@@ -95,7 +96,7 @@
             this._playing = this._autoplay || false;
 
             this._responsive = true;
-            
+
             if (this.element.data('responsive') === false) {
                 this._responsive = false;
             }
@@ -326,6 +327,8 @@
             var self = this;
             this._initialize();
 
+            self._params.autoplay = self._autoplay;
+
             this.element.append('<div/>');
 
             this._on(window, {
@@ -333,14 +336,11 @@
                     if (self._player !== undefined) {
                         return;
                     }
-
                     self._player = DM.player(self.element.children(':first')[0], {
                         height: self._height,
                         width: self._width,
                         video: self._code,
-                        params: {
-                            autoplay: self._autoplay
-                        }
+                        params: self.params
                     });
                 }
             });

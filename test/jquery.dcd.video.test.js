@@ -48,6 +48,7 @@
 
             it("should play automatically", function () {
                 var video = $('[data-autoplay=true]:dcd-videoYoutube');
+                waits(2000);
                 expect(video.video('playing')).toBeTruthy();
                 video.video('pause');
             });
@@ -62,7 +63,7 @@
             it("should pause the videos", function () {
                 var video = $(':dcd-videoYoutube');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 video.video('pause');
                 expect(video.video('playing')).toBeFalsy();
             });
@@ -70,7 +71,7 @@
             it("should stop the videos", function () {
                 var video = $(':dcd-videoYoutube');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 video.video('stop');
                 expect(video.video('playing')).toBeFalsy();
             });
@@ -81,7 +82,7 @@
 
             it("should play automatically", function () {
                 var video = $('[data-autoplay=true]:dcd-videoVimeo');
-                waits(1000);
+                waits(2000);
                 expect(video.video('playing')).toBeTruthy();
                 video.video('pause');
             });
@@ -89,14 +90,14 @@
             it("should play the videos", function () {
                 var video = $(':dcd-videoVimeo');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 expect(video.video('playing')).toBeTruthy();
             });
 
             it("should pause the videos", function () {
                 var video = $(':dcd-videoVimeo');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 video.video('pause');
                 expect(video.video('playing')).toBeFalsy();
             });
@@ -104,7 +105,7 @@
             it("should stop the videos", function () {
                 var video = $(':dcd-videoVimeo');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 video.video('stop');
                 expect(video.video('playing')).toBeFalsy();
             });
@@ -122,6 +123,7 @@
 
             it("should play automatically", function () {
                 var video = $('[data-autoplay=true]:dcd-videoDailymotion');
+                waits(5000); // dailymotion loads extremly slow
                 expect(video.video('playing')).toBeTruthy();
                 video.video('pause');
             });
@@ -136,7 +138,7 @@
             it("should pause the videos", function () {
                 var video = $(':dcd-videoDailymotion');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 video.video('pause');
                 expect(video.video('playing')).toBeFalsy();
             });
@@ -144,7 +146,7 @@
             it("should stop the videos", function () {
                 var video = $(':dcd-videoDailymotion');
                 video.video('play');
-                waits(1000);
+                waits(2000);
                 video.video('stop');
                 expect(video.video('playing')).toBeFalsy();
             });
