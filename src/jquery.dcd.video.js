@@ -91,8 +91,7 @@
             this._code = this.element.data('code');
             this._width = this.element.data('width');
             this._height = this.element.data('height');
-            this._autoplay = this.element.data('autoplay');
-
+            this._autoplay = !!this.element.data('autoplay');
             this._playing = this._autoplay || false;
 
             this._responsive = true;
@@ -165,7 +164,9 @@
                         return;
                     }
 
-                    self._params.autoplay = self._autoplay;
+                    if (self._autoplay) {
+                        self._params.autoplay = 1;
+                    }
 
                     self._player = new YT.Player(self.element.children(':first')[0], {
                         height: self._height,
@@ -269,7 +270,12 @@
         _create: function () {
             this._initialize();
 
-            var timestamp = new Date().getTime();
+            var timestamp = new Date().getTime(),
+                additionalParams = '';
+
+            if (this._autoplay) {
+                additionalParams += '&autoplay=1';
+            }
 
             this.element.append(
                 $('<iframe/>')
@@ -277,7 +283,7 @@
                     .attr('id', 'vimeo' + this._code + timestamp)
                     .attr('width', this._width)
                     .attr('height', this._height)
-                    .attr('src', 'http://player.vimeo.com/video/' + this._code + '?api=1&player_id=vimeo' + this._code + timestamp + '&autoplay=' + this._autoplay)
+                    .attr('src', 'http://player.vimeo.com/video/' + this._code + '?api=1&player_id=vimeo' + this._code + timestamp + additionalParams)
             );
             this._player = $f(this.element.children(":first")[0]);
 
@@ -327,8 +333,9 @@
             var self = this;
             this._initialize();
 
-            self._params.autoplay = self._autoplay;
-
+            if (self._autoplay) {
+                self._params.autoplay = 1;
+            }
             this.element.append('<div/>');
 
             this._on(window, {
@@ -340,7 +347,7 @@
                         height: self._height,
                         width: self._width,
                         video: self._code,
-                        params: self.params
+                        params: self._params
                     });
                 }
             });
