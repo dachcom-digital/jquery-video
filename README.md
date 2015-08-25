@@ -1,5 +1,7 @@
 jquery-video
 ============
+
+[![Join the chat at https://gitter.im/dachcom-digital/jquery-video](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dachcom-digital/jquery-video?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Unifies the iframe APIs of Youtube, Vimeo and Dailymotion. Build as responsive jQuery UI widget.
 
 Features
