@@ -292,7 +292,7 @@
                     .attr('id', 'vimeo' + this._code + timestamp)
                     .attr('width', this._width)
                     .attr('height', this._height)
-                    .attr('src', 'http://player.vimeo.com/video/' + this._code + '?api=1&player_id=vimeo' + this._code + timestamp + additionalParams)
+                    .attr('src', document.location.protocol + '//player.vimeo.com/video/' + this._code + '?api=1&player_id=vimeo' + this._code + timestamp + additionalParams)
             );
             this._player = $f(this.element.children(":first")[0]);
 
