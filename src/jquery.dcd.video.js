@@ -92,6 +92,7 @@
             this._width = this.element.data('width');
             this._height = this.element.data('height');
             this._autoplay = !!this.element.data('autoplay');
+            this._rel = !!this.element.data('rel');
             this._playing = this._autoplay || false;
 
             this._responsive = true;
@@ -166,6 +167,10 @@
 
                     if (self._autoplay) {
                         self._params.autoplay = 1;
+                    }
+
+                    if (!self._rel) {
+                        self._params.rel = 0;
                     }
 
                     self._player = new YT.Player(self.element.children(':first')[0], {
@@ -275,6 +280,10 @@
 
             if (this._autoplay) {
                 additionalParams += '&autoplay=1';
+            }
+
+            if (!this._rel) {
+                additionalParams += '&rel=0';
             }
 
             this.element.append(

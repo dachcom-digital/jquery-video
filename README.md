@@ -62,6 +62,7 @@ Options
 - **height**: the height of the video `[Required:Integer]`
 - **responsive**: should the video be included responsively `[Optional:(true|false)]`
 - **autoplay**: should the video play automatically `[Optional:(true|false)]`
+- **rel**: should the player suggest related videos when video ends `[Optional:(true|false), Default:false]`
 
 Methods
 ============
