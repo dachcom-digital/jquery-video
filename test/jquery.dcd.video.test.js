@@ -53,6 +53,18 @@
                 video.video('pause');
             });
 
+            it("should append the rel property if configured", function () {
+                var video = $(':not([data-rel=true]):dcd-videoYoutube');
+                waits(2000);
+                expect(video.find('iframe').attr('src')).toMatch('rel=0');
+            });
+
+            it("should not append the rel property if configured", function () {
+                var video = $('[data-rel=true]:dcd-videoYoutube');
+                waits(2000);
+                expect(video.find('iframe').attr('src')).not.toMatch('rel=0');
+            });
+
             it("should play the videos", function () {
                 var video = $(':dcd-videoYoutube');
                 video.video('play');
@@ -126,6 +138,18 @@
                 waits(5000); // dailymotion loads extremly slow
                 expect(video.video('playing')).toBeTruthy();
                 video.video('pause');
+            });
+
+            it("should append the rel property if configured", function () {
+                var video = $(':not([data-rel=true]):dcd-videoDailymotion');
+                waits(2000);
+                expect(video.find('iframe').attr('src')).toMatch('related=0');
+            });
+
+            it("should not append the rel property if configured", function () {
+                var video = $('[data-rel=true]:dcd-videoDailymotion');
+                waits(2000);
+                expect(video.find('iframe').attr('src')).not.toMatch('related=0');
             });
 
             it("should play the videos", function () {

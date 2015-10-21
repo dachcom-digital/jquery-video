@@ -6,7 +6,7 @@
  * Copyright 2015 DACHCOM.DIGITAL AG
  * @author Volker Andres, Marco Rieser
  * @see https://github.com/dachcom-digital/jquery-video
- * @version 0.2.0
+ * @version 0.2.1
  */
 (function ($) {
     'use strict';
@@ -282,10 +282,6 @@
                 additionalParams += '&autoplay=1';
             }
 
-            if (!this._rel) {
-                additionalParams += '&rel=0';
-            }
-
             this.element.append(
                 $('<iframe/>')
                     .attr('frameborder', 0)
@@ -344,6 +340,9 @@
 
             if (self._autoplay) {
                 self._params.autoplay = 1;
+            }
+            if (!self._rel) {
+                self._params.related = 0;
             }
             this.element.append('<div/>');
 
