@@ -2,11 +2,16 @@
 /*jslint nomen: true*/
 
 /**
+ * @preserve
+ *
  * jquery-video widget
  * Copyright 2015 DACHCOM.DIGITAL AG
- * @author Volker Andres, Marco Rieser
+ *
+ * @author Volker Andres
+ * @author Marco Rieser
  * @see https://github.com/dachcom-digital/jquery-video
- * @version 0.2.1
+ * @license MIT
+ * @version 0.3.0
  */
 (function ($) {
     'use strict';
@@ -52,24 +57,39 @@
     };
 
     $.widget('dcd.video', {
+        options: {
+            classResponsive: 'responsive'
+        },
+
         /**
          * Initialization of the video widget
          * Calls API specific widgets
          * @private
          */
         _create: function () {
+            var self = this;
+
             switch (this.element.data('type')) {
                 case 'youtube':
-                    this.element.videoYoutube();
+                    this.element.videoYoutube(this.options);
                     this._player = this.element.data('dcdVideoYoutube');
+                    this.element.on('videoyoutubeready videoyoutubeplay videoyoutubepause videoyoutubeend', function(event, data) {
+                        self._trigger(data.event, event, [data]);
+                    });
                     break;
                 case 'vimeo':
-                    this.element.videoVimeo();
+                    this.element.videoVimeo(this.options);
                     this._player = this.element.data('dcdVideoVimeo');
+                    this.element.on('videovimeoready videovimeoplay videovimeopause videovimeoend', function(event, data) {
+                        self._trigger(data.event, event, [data]);
+                    });
                     break;
                 case 'dailymotion':
-                    this.element.videoDailymotion();
+                    this.element.videoDailymotion(this.options);
                     this._player = this.element.data('dcdVideoDailymotion');
+                    this.element.on('videodailymotionready videodailymotionplay videodailymotionpause videodailymotionend', function(event, data) {
+                        self._trigger(data.event, event, [data]);
+                    });
                     break;
                 default:
                     throw {
@@ -94,15 +114,10 @@
             this._autoplay = !!this.element.data('autoplay');
             this._rel = !!this.element.data('rel');
             this._playing = this._autoplay || false;
-
-            this._responsive = true;
-
-            if (this.element.data('responsive') === false) {
-                this._responsive = false;
-            }
+            this._responsive = this.element.data('responsive') !== false;
 
             if (this._responsive === true) {
-                this.element.addClass('responsive');
+                this.element.addClass(this.options.classResponsive);
             }
 
             this._calculateRatio();
@@ -179,13 +194,22 @@
                         videoId: self._code,
                         playerVars: self._params,
                         events: {
+                            onReady: function () {
+                                self._trigger('ready', {}, [{type: 'youtube', event: 'ready'}]);
+                            },
                             onStateChange: function (data) {
                                 switch (window.parseInt(data.data, 10)) {
+                                    case 0:
+                                        self._playing = false;
+                                        self._trigger('end', {}, [{type: 'youtube', event: 'end'}]);
+                                        break;
                                     case 1:
                                         self._playing = true;
+                                        self._trigger('play', {}, [{type: 'youtube', event: 'play'}]);
                                         break;
-                                    default:
+                                    case 2:
                                         self._playing = false;
+                                        self._trigger('pause', {}, [{type: 'youtube', event: 'pause'}]);
                                         break;
                                 }
 
@@ -248,6 +272,7 @@
         stop: function () {
             this._player.stopVideo();
             this._playing = false;
+            this._trigger('end', {}, [{type: 'youtube', event: 'end'}]);
         },
 
         /**
@@ -273,6 +298,8 @@
          * @private
          */
         _create: function () {
+            var self = this;
+
             this._initialize();
 
             var timestamp = new Date().getTime(),
@@ -294,6 +321,20 @@
 
             // Froogaloop throws error without a registered ready event
             this._player.addEvent('ready', function () {
+                self._trigger('ready', {}, [{type: 'vimeo', event: 'ready'}]);
+
+                self._player.addEvent('play', function () {
+                    self._playing = true;
+                    self._trigger('play', {}, [{type: 'vimeo', event: 'play'}]);
+                });
+                self._player.addEvent('pause', function () {
+                    self._playing = false;
+                    self._trigger('pause', {}, [{type: 'vimeo', event: 'pause'}]);
+                });
+                self._player.addEvent('finish', function () {
+                    self._playing = false;
+                    self._trigger('end', {}, [{type: 'vimeo', event: 'end'}]);
+                });
             });
         },
 
@@ -319,6 +360,7 @@
         stop: function () {
             this._player.api('unload');
             this._playing = false;
+            this._trigger('end', {}, [{type: 'vimeo', event: 'end'}]);
         },
 
         /**
@@ -356,6 +398,22 @@
                         width: self._width,
                         video: self._code,
                         params: self._params
+                    });
+
+                    self._player.addEventListener('apiready', function () {
+                        self._trigger('ready', {}, [{type: 'dailymotion', event: 'ready'}]);
+                    });
+                    self._player.addEventListener('play', function () {
+                        self._playing = true;
+                        self._trigger('play', {}, [{type: 'dailymotion', event: 'play'}]);
+                    });
+                    self._player.addEventListener('pause', function () {
+                        self._playing = false;
+                        self._trigger('pause', {}, [{type: 'dailymotion', event: 'pause'}]);
+                    });
+                    self._player.addEventListener('end', function () {
+                        self._playing = false;
+                        self._trigger('end', {}, [{type: 'dailymotion', event: 'end'}]);
                     });
                 }
             });
@@ -411,7 +469,9 @@
          */
         stop: function () {
             this._player.pause();
+            this._player.seek(0);
             this._playing = false;
+            this._trigger('end', {}, [{type: 'dailymotion', event: 'end'}]);
         },
 
         /**

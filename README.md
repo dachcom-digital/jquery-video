@@ -53,7 +53,7 @@ Installation
 </script>
 ```
 
-Options
+Options (data-attribute)
 ============
 
 - **type**: API used `[Required:(youtube|vimeo|dailymotion)]`
@@ -64,12 +64,44 @@ Options
 - **autoplay**: should the video play automatically `[Optional:(true|false), Default:false]`
 - **rel**: should the player suggest related videos when video ends `[Optional:(true|false), Default:false]`
 
+Options (Widget)
+============
+- **classResponsive**: class to be used for responsive container `[Optional:String, Default:"responsive"]`
+
+```html
+<script type="text/javascript">
+    $(function () {
+        $('.video').video({classResponsive: 'my-class'});
+    });
+</script>
+```
+
 Methods
 ============
 - **play**: play video
 - **pause**: pause video
 - **stop**: stop video
 - **playing**: returns status of video
+
+Events
+======
+All events are available abstract and per type (e.g. videoplay, videoyoutubeplay, videovimeoplay, videodailymotionplay)
+
+- **videoready**: video is ready to play
+- **videoplay**: video started playing
+- **videopause**: video was paused
+- **videoend**: video was stopped or ended
+
+```html
+<script type="text/javascript">
+    $(function () {
+        $('.video').on('videoready videoplay videopause videoend', function (event, data) {
+            console.log(data.type);
+            console.log(data.event);
+        });
+    });
+</script>
+```
 
 Examples
 ------------
@@ -87,9 +119,11 @@ Wishlist
 - find better way to include and initialize youtube api
 - find better way for video factory and inheritance
 - include full test suite
-- make 'responsive' class configurable
+- <del>make 'responsive' class configurable</del>
+- find better way to stop videos for Dailymotion and Vimeo
 - implement more API commands
 - implement more APIs (<del>Dailymotion</del>, MyVideo, ...)
+- migrate tests to Jasmine 2.x
 
 Known Issues
 ============

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
     <title>jquery-video demo</title>
     <style type="text/css">
@@ -24,34 +24,51 @@
         }
 
         .container {
-            width: 70%;
+            width: 90%;
             padding: 1%;
-            margin: 0px auto;
+            margin: 0 auto;
             background: #fff;
             box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .left, .right {
+            display: inline-block;
+            width: 49%;
+            vertical-align: top;
+        }
+
+        #events {
+            width: 100%;
+            height: 100%;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>Pages</h1>
-    <ul>
-        <li>Videos</li>
-        <li><a href="autoplay.html">Autoplay</a></li>
-    </ul>
-</div>
-<div class="container">
-    <h1>Controls</h1>
-    <button onclick="$('.video').video('play');">Start All</button>
-    <button onclick="$('.video').video('pause');">Pause All</button>
-    <button onclick="$('[data-code=29950141]').video('play');">Play Video with Code "29950141"</button>
-    <button onclick="$(':dcd-videoYoutube').video('play');">Play Youtube Videos</button>
-    <button onclick="$(':dcd-videoDailymotion').video('play');">Play Dailymotion Videos</button>
-    <button onclick="$(':dcd-videoDailymotion').video('pause');">Pause Dailymotion Videos</button>
-    <button onclick="$('.video').video('stop');">Stop All</button>
-    <button onclick="alert($(':dcd-videoVimeo').video('playing'))">First playing?</button>
-    <button onclick="alert($(':dcd-videoYoutube').video('playing'))">Second playing?</button>
-    <button onclick="alert($(':dcd-videoDailymotion').video('playing'))">Third playing?</button>
+    <h1>jquery-video</h1>
+    <div class="left">
+        <h2>Pages</h2>
+        <ul>
+            <li>Videos</li>
+            <li><a href="autoplay.html">Autoplay</a></li>
+        </ul>
+
+        <h2>Controls</h2>
+        <button onclick="$('.video').video('play');">Start All</button>
+        <button onclick="$('.video').video('pause');">Pause All</button>
+        <button onclick="$('[data-code=29950141]').video('play');">Play Video with Code "29950141"</button>
+        <button onclick="$(':dcd-videoYoutube').video('play');">Play Youtube Videos</button>
+        <button onclick="$(':dcd-videoDailymotion').video('play');">Play Dailymotion Videos</button>
+        <button onclick="$(':dcd-videoDailymotion').video('pause');">Pause Dailymotion Videos</button>
+        <button onclick="$('.video').video('stop');">Stop All</button>
+        <button onclick="alert($(':dcd-videoVimeo').video('playing'))">First playing?</button>
+        <button onclick="alert($(':dcd-videoYoutube').video('playing'))">Second playing?</button>
+        <button onclick="alert($(':dcd-videoDailymotion').video('playing'))">Third playing?</button>
+    </div>
+    <div class="right">
+        <h2>Events</h2>
+        <textarea rows="10" cols="45" id="events" readonly></textarea>
+    </div>
 </div>
 
 <div class="container">
@@ -69,6 +86,11 @@
 <script type="text/javascript">
     $(function () {
         $('.video').video();
+
+        $('.video').on('videoready videoplay videopause videoend', function (event, data) {
+            var dt = new Date();
+            $('#events').prepend(dt.toLocaleString() + " - " + data.type + ":" + data.event + "\n").scrollTop(0);
+        });
     });
 </script>
 </body>
