@@ -118,12 +118,12 @@ Wishlist
 ============
 - find better way to include and initialize youtube api
 - find better way for video factory and inheritance
-- include full test suite
+- include full test suite, make events testable
 - <del>make 'responsive' class configurable</del>
 - find better way to stop videos for Dailymotion and Vimeo
 - implement more API commands
 - implement more APIs (<del>Dailymotion</del>, MyVideo, ...)
-- migrate tests to Jasmine 2.x
+- <del>migrate tests to Jasmine 2.x</del>
 
 Known Issues
 ============

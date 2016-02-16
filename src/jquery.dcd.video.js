@@ -5,13 +5,13 @@
  * @preserve
  *
  * jquery-video widget
- * Copyright 2015 DACHCOM.DIGITAL AG
+ * Copyright 2015-2016 DACHCOM.DIGITAL AG
  *
  * @author Volker Andres
  * @author Marco Rieser
  * @see https://github.com/dachcom-digital/jquery-video
  * @license MIT
- * @version 0.3.0
+ * @version 0.3.1
  */
 (function ($) {
     'use strict';
@@ -72,21 +72,21 @@
             switch (this.element.data('type')) {
                 case 'youtube':
                     this.element.videoYoutube(this.options);
-                    this._player = this.element.data('dcdVideoYoutube');
+                    this._player = this.element.data('dcd-videoYoutube');
                     this.element.on('videoyoutubeready videoyoutubeplay videoyoutubepause videoyoutubeend', function(event, data) {
                         self._trigger(data.event, event, [data]);
                     });
                     break;
                 case 'vimeo':
                     this.element.videoVimeo(this.options);
-                    this._player = this.element.data('dcdVideoVimeo');
+                    this._player = this.element.data('dcd-videoVimeo');
                     this.element.on('videovimeoready videovimeoplay videovimeopause videovimeoend', function(event, data) {
                         self._trigger(data.event, event, [data]);
                     });
                     break;
                 case 'dailymotion':
                     this.element.videoDailymotion(this.options);
-                    this._player = this.element.data('dcdVideoDailymotion');
+                    this._player = this.element.data('dcd-videoDailymotion');
                     this.element.on('videodailymotionready videodailymotionplay videodailymotionpause videodailymotionend', function(event, data) {
                         self._trigger(data.event, event, [data]);
                     });
@@ -160,6 +160,16 @@
                 return;
             }
             this.element.css('paddingBottom', (this._height / this._width * 100) + '%');
+        },
+
+        /**
+         * stops and unloads player
+         * @private
+         */
+        _destroy: function () {
+            this.element.off();
+            this.element.removeAttr('style');
+            this._player.destroy();
         }
     });
 
@@ -287,8 +297,10 @@
          * @private
          */
         _destroy: function () {
+            this.element.removeAttr('style');
             this.stop();
             this._player.destroy();
+            this.element.off().empty();
         }
     });
 
@@ -368,6 +380,16 @@
          */
         playing: function () {
             return this._playing;
+        },
+
+        /**
+         * stops and unloads player
+         * @private
+         */
+        _destroy: function () {
+            this.element.removeAttr('style');
+            this.stop();
+            this.element.off().empty();
         }
     });
 
@@ -479,6 +501,16 @@
          */
         playing: function () {
             return this._playing;
+        },
+
+        /**
+         * stops and unloads player
+         * @private
+         */
+        _destroy: function () {
+            this.element.removeAttr('style');
+            this.stop();
+            this.element.off().empty();
         }
     });
 }(jQuery));

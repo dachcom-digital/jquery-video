@@ -1,11 +1,11 @@
 {
-  "name": "jquery-video",
-  "version": "0.3.0",
-  "main": [
-    "src/jquery.dcd.video.js"
-  ],
-  "dependencies": {
-    "jquery": ">=1.6",
-    "jquery-ui": ">=1.10"
-  }
+    "name": "jquery-video",
+    "version": "0.3.1",
+    "main": [
+        "src/jquery.dcd.video.js"
+    ],
+    "dependencies": {
+        "jquery": ">=1.6",
+        "jquery-ui": ">=1.10"
+    }
 }
