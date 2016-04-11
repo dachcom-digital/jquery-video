@@ -73,21 +73,21 @@
                 case 'youtube':
                     this.element.videoYoutube(this.options);
                     this._player = this.element.data('dcd-videoYoutube');
-                    this.element.on('videoyoutubeready videoyoutubeplay videoyoutubepause videoyoutubeend', function(event, data) {
+                    this.element.on('videoyoutubeready videoyoutubeplay videoyoutubepause videoyoutubeend', function (event, data) {
                         self._trigger(data.event, event, [data]);
                     });
                     break;
                 case 'vimeo':
                     this.element.videoVimeo(this.options);
                     this._player = this.element.data('dcd-videoVimeo');
-                    this.element.on('videovimeoready videovimeoplay videovimeopause videovimeoend', function(event, data) {
+                    this.element.on('videovimeoready videovimeoplay videovimeopause videovimeoend', function (event, data) {
                         self._trigger(data.event, event, [data]);
                     });
                     break;
                 case 'dailymotion':
                     this.element.videoDailymotion(this.options);
                     this._player = this.element.data('dcd-videoDailymotion');
-                    this.element.on('videodailymotionready videodailymotionplay videodailymotionpause videodailymotionend', function(event, data) {
+                    this.element.on('videodailymotionready videodailymotionplay videodailymotionpause videodailymotionend', function (event, data) {
                         self._trigger(data.event, event, [data]);
                     });
                     break;
@@ -395,6 +395,11 @@
 
     $.widget('dcd.videoDailymotion', $.dcd.video, {
         /**
+         * property for detecting the stop of a video
+         */
+        _stopping: false,
+
+        /**
          * Initialization of the Dailymotion widget
          * @private
          */
@@ -431,6 +436,10 @@
                     });
                     self._player.addEventListener('pause', function () {
                         self._playing = false;
+                        if (self._stopping === true) {
+                            self._stopping = false;
+                            return;
+                        }
                         self._trigger('pause', {}, [{type: 'dailymotion', event: 'pause'}]);
                     });
                     self._player.addEventListener('end', function () {
@@ -490,8 +499,11 @@
          * Stop command for Dailymotion
          */
         stop: function () {
-            this._player.pause();
-            this._player.seek(0);
+            if (this.playing()) {
+                this._stopping = true;
+                this._player.pause();
+                this._player.seek(0);
+            }
             this._playing = false;
             this._trigger('end', {}, [{type: 'dailymotion', event: 'end'}]);
         },
