@@ -24,7 +24,7 @@ Dependencies
 - Vimeo API (Froogaloop2): https://github.com/vimeo/player-api/tree/master/javascript
 - Youtube API: https://developers.google.com/youtube/iframe_api_reference
 - Dailymotion API: http://www.dailymotion.com/doc/api/player.html
-- Jasmine (Testing): http://pivotal.github.io/jasmine/
+- Jasmine (Testing): https://jasmine.github.io/
 
 Installation
 ============
