@@ -11,7 +11,7 @@
  * @author Marco Rieser
  * @see https://github.com/dachcom-digital/jquery-video
  * @license MIT
- * @version 0.3.1
+ * @version 0.4.0
  */
 (function ($) {
     'use strict';
@@ -319,6 +319,12 @@
 
             if (this._autoplay) {
                 additionalParams += '&autoplay=1';
+            }
+
+            for (var key in this._params) {
+                if (this._params.hasOwnProperty(key)) {
+                    additionalParams += '&' + key + '=' + this._params[key];
+                }
             }
 
             this.element.append(
